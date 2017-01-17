@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>D3 Line Chart</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+    <script>
+        var h = 100;
+        var w = 200;
+
+        monthlySales = [
+            { "month": 10, "sales": 20 },
+            { "month": 20, "sales": 14 },
+            { "month": 30, "sales": 20 },
+            { "month": 40, "sales": 21 },
+            { "month": 50, "sales": 15 },
+            { "month": 60, "sales": 22 },
+            { "month": 70, "sales": 9 },
+            { "month": 80, "sales": 6 },
+            { "month": 90, "sales": 23 },
+            { "month": 100, "sales": 7 },
+        ];
+
+        var lineFun = d3.svg.line()
+        .x((d) => d.month * 2)
+        .y((d) => d.sales)
+        .interpolate("basis");
+
+        var svg = d3.select("body").append("svg").attr({
+            width: w,
+            height: h
+        });
+
+        var viz = svg.append("path").attr({
+            d: lineFun(monthlySales),
+            "stroke": "purple",
+            "stroke-width": 2,
+            "fill": "none"
+        });
+
+        var labels = svg.selectAll("text")
+        .data(monthlySales)
+        .enter()
+        .append("text")
+        .text((d) => d.sales)
+        .attr({
+            x: d => d.month * 3 - 25,
+            y: d => h - d.sales,
+            "font-size": "12px",
+            "font-family": "sans-serif",
+            "fill": "#666666",
+            "text-anchor": "start",
+            "dy": ".35em",
+            "font-weight": (d, i) => {
+                if (i === 0 || i == (monthlySales.length - 1)) {
+                    return "bold";
+                } else {
+                    return "normal";
+                }
+            }
+        })
+    </script>
+</body>
+</html>
