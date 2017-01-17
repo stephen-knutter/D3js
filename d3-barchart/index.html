@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>D3 Bar Chart</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+
+    <script>
+        var w = 300;
+        var h = 100;
+        var padding = 2;
+        var dataset = [5, 10, 14, 20, 25, 11, 25, 22, 18, 7];
+        var svg = d3.select("body")
+                    .append("svg")
+                        .attr("width", w)
+                        .attr("height", h);
+        
+        function colorPicker(v) {
+            if (v <= 20) { return "#666" }
+            else if (v > 20) { return "#ff0033" }
+        }
+
+        svg.selectAll("rect")
+            .data(dataset)
+            .enter()
+            .append("rect")
+                .attr({
+                    x: (d, i) => i * (w / dataset.length),
+                    y: (d) => h - (d * 4),
+                    width: w / dataset.length - padding,
+                    height: (d) => d * 4,
+                    fill: (d) => colorPicker(d)
+                });
+
+        svg.selectAll("text")
+            .data(dataset)
+            .enter()
+            .append("text")
+            .text((d) => d)
+            .attr({
+                "text-anchor": "middle",
+                x: (d, i) => i * (w / dataset.length) + (w / dataset.length - padding) / 2,
+                y: (d) => h - (d * 4) + 16,
+                "font-family": "georgia",
+                "font-weight": "600",
+                fill: "#ffffff"
+            });
+    </script>
+</body>
+</html>
